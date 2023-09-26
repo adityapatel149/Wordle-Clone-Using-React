@@ -8,8 +8,12 @@ const Attempt = ({ attemptVal }) => {
     chosenWord,
     board,
     currentAttempt,
-    keyboardStatus,
-    setKeyboardStatus
+    incorrectKeys,
+    setIncorrectKeys,
+    almostKeys,
+    setAlmostKeys,
+    correctKeys,
+    setCorrectKeys,
   } = useContext(AppContext);
 
   let statusArray = [];
@@ -25,11 +29,20 @@ const Attempt = ({ attemptVal }) => {
       let guessedWord = [...board[attemptVal]];
       console.log("New Attempt");
       for (let i = 0; i < 5; i++) {
-        if (statusArray[i] === 0) {
-          setKeyboardStatus((prev) => new Set([...prev, guessedWord[i]]));
+        if (statusArray[i] === 2) {
+          setCorrectKeys((prev) => new Set([...prev, guessedWord[i]]));
+        } else if (statusArray[i] === 1) {
+          setAlmostKeys((prev) => new Set([...prev, guessedWord[i]]));
+        } else {
+          if (
+            !correctKeys.has(guessedWord[i]) &&
+            !almostKeys.has(guessedWord[i])
+          ) {
+            setIncorrectKeys((prev) => new Set([...prev, guessedWord[i]]));
+          }
         }
       }
-      console.log(keyboardStatus);
+      console.log(correctKeys, almostKeys, incorrectKeys);
     }
   }, [currentAttempt.attempt]);
 

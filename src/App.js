@@ -9,12 +9,14 @@ export const AppContext = createContext();
 export default function App() {
   const [chosenWord, setChosenWord] = useState("build");
   const [wordSet, setWordSet] = useState(new Set());
-  const [keyboardStatus, setKeyboardStatus] = useState(new Set());
+  const [incorrectKeys, setIncorrectKeys] = useState(new Set());
+  const [almostKeys, setAlmostKeys] = useState(new Set());
+  const [correctKeys, setCorrectKeys] = useState(new Set());
 
   const [board, setBoard] = useState(boardDefault);
   const [currentAttempt, setCurrentAttempt] = useState({
     attempt: 0,
-    letterPos: 0
+    letterPos: 0,
   });
 
   useEffect(() => {
@@ -30,7 +32,7 @@ export default function App() {
     setBoard(newBoard);
     setCurrentAttempt({
       ...currentAttempt,
-      letterPos: currentAttempt.letterPos + 1
+      letterPos: currentAttempt.letterPos + 1,
     });
   };
   const onDelete = () => {
@@ -40,7 +42,7 @@ export default function App() {
     setBoard(newBoard);
     setCurrentAttempt({
       ...currentAttempt,
-      letterPos: currentAttempt.letterPos - 1
+      letterPos: currentAttempt.letterPos - 1,
     });
   };
 
@@ -53,7 +55,7 @@ export default function App() {
       setCurrentAttempt({
         ...currentAttempt,
         attempt: currentAttempt.attempt + 1,
-        letterPos: 0
+        letterPos: 0,
       });
     } else {
       alert("Word not Found");
@@ -74,13 +76,17 @@ export default function App() {
           chosenWord,
           board,
           setBoard,
-          keyboardStatus,
-          setKeyboardStatus,
+          incorrectKeys,
+          setIncorrectKeys,
+          almostKeys,
+          setAlmostKeys,
+          correctKeys,
+          setCorrectKeys,
           currentAttempt,
           setCurrentAttempt,
           onDelete,
           onEnter,
-          onSelectLetter
+          onSelectLetter,
         }}
       >
         <Board />

@@ -55,7 +55,7 @@ const reducer = (state, action) => {
 };
 
 export default function App() {
-  const [chosenWord, setChosenWord] = useState("halve");
+  const [chosenWord, setChosenWord] = useState("");
   const [wordSet, setWordSet] = useState(new Set());
   const [keyboardStatus, dispatch] = useReducer(reducer, {
     correctKeys: new Set(),
@@ -74,7 +74,7 @@ export default function App() {
     Promise.all([generateAnswer(), generateWordSet()]).then(
       ([answer, words]) => {
         setWordSet(words.wordSet);
-        //setChosenWord(answer.answer);
+        setChosenWord(answer.answer);
       },
     );
   }, []);

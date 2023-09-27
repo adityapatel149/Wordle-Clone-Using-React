@@ -4,17 +4,8 @@ import { useContext, useEffect } from "react";
 import WordCheck from "../WordCheck";
 
 const Attempt = ({ attemptVal }) => {
-  const {
-    chosenWord,
-    board,
-    currentAttempt,
-    incorrectKeys,
-    setIncorrectKeys,
-    almostKeys,
-    setAlmostKeys,
-    correctKeys,
-    setCorrectKeys,
-  } = useContext(AppContext);
+  const { chosenWord, board, currentAttempt, keyboardStatus, dispatch } =
+    useContext(AppContext);
 
   let statusArray = [];
 
@@ -30,19 +21,14 @@ const Attempt = ({ attemptVal }) => {
       console.log("New Attempt");
       for (let i = 0; i < 5; i++) {
         if (statusArray[i] === 2) {
-          setCorrectKeys((prev) => new Set([...prev, guessedWord[i]]));
+          dispatch({ type: "SET_CORRECTKEYS", payload: guessedWord[i] });
         } else if (statusArray[i] === 1) {
-          setAlmostKeys((prev) => new Set([...prev, guessedWord[i]]));
+          dispatch({ type: "SET_ALMOSTKEYS", payload: guessedWord[i] });
         } else {
-          if (
-            !correctKeys.has(guessedWord[i]) &&
-            !almostKeys.has(guessedWord[i])
-          ) {
-            setIncorrectKeys((prev) => new Set([...prev, guessedWord[i]]));
-          }
+          dispatch({ type: "SET_INCORRECTKEYS", payload: guessedWord[i] });
         }
       }
-      console.log(correctKeys, almostKeys, incorrectKeys);
+      console.log(keyboardStatus);
     }
   }, [currentAttempt.attempt]);
 

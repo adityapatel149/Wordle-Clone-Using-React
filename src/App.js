@@ -3,15 +3,48 @@ import "./styles.css";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import { boardDefault, generateAnswerSet, generateWordSet } from "./Words";
+import { useReducer } from "react/cjs/react.production.min";
 
 export const AppContext = createContext();
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SET_CORRECTKEYS":
+      return {
+        ...state,
+        correctKeys: new Set([...state.correctKeys, action.payload]),
+      };
+    case "SET_ALMOSTKEYS":
+      return {
+        ...state,
+        almostKeys: new Set([...state.almostKeys, action.payload]),
+      };
+    case "SET_INCORRECTKEYS":
+      if (
+        !state.correctKeys.has(action.payload) &&
+        !state.almostKeys.has(action.payload)
+      ) {
+        return {
+          ...state,
+          incorrectKeys: new Set([...state.incorrectKeys, action.payload]),
+        };
+      }
+    default:
+      return state;
+  }
+};
 
 export default function App() {
   const [chosenWord, setChosenWord] = useState("build");
   const [wordSet, setWordSet] = useState(new Set());
-  const [incorrectKeys, setIncorrectKeys] = useState(new Set());
+  const [keyboardStatus, dispatch] = useReducer(reducer, {
+    correctKeys: new Set(),
+    almostKeys: new Set(),
+    incorrectKeys: new Set(),
+  });
+  /*const [incorrectKeys, setIncorrectKeys] = useState(new Set());
   const [almostKeys, setAlmostKeys] = useState(new Set());
-  const [correctKeys, setCorrectKeys] = useState(new Set());
+  const [correctKeys, setCorrectKeys] = useState(new Set());*/
 
   const [board, setBoard] = useState(boardDefault);
   const [currentAttempt, setCurrentAttempt] = useState({
@@ -75,13 +108,9 @@ export default function App() {
         value={{
           chosenWord,
           board,
+          keyboardStatus,
+          dispatch,
           setBoard,
-          incorrectKeys,
-          setIncorrectKeys,
-          almostKeys,
-          setAlmostKeys,
-          correctKeys,
-          setCorrectKeys,
           currentAttempt,
           setCurrentAttempt,
           onDelete,

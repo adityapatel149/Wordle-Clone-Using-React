@@ -73,7 +73,14 @@ body {
   font-size: 0.8rem;
 }
 
-.disabledKey {
+.correctKey {
+  background-color: #538d4e;
+}
+.almostKey {
+  background-color: #b59f3b;
+}
+
+.incorrectKey {
   background-color: #2b2b2b;
 }
 

@@ -18,7 +18,7 @@ const Attempt = ({ attemptVal }) => {
   useEffect(() => {
     if (attemptVal === currentAttempt.attempt - 1) {
       let guessedWord = [...board[attemptVal]];
-      console.log("New Attempt");
+      //console.log("New Attempt");
       for (let i = 0; i < 5; i++) {
         if (statusArray[i] === 2) {
           dispatch({ type: "SET_CORRECTKEYS", payload: guessedWord[i] });
@@ -28,7 +28,7 @@ const Attempt = ({ attemptVal }) => {
           dispatch({ type: "SET_INCORRECTKEYS", payload: guessedWord[i] });
         }
       }
-      console.log(keyboardStatus);
+      //console.log(keyboardStatus);
     }
   }, [currentAttempt.attempt]);
 

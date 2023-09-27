@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AppContext } from "../App";
 
-const Key = ({ keyVal, bigKey, disabled }) => {
+const Key = ({ keyVal, bigKey, correct, almost, incorrect }) => {
   const { onSelectLetter, onDelete, onEnter } = useContext(AppContext);
   const selectLetter = () => {
     if (keyVal === "ENTER") {
@@ -15,8 +15,8 @@ const Key = ({ keyVal, bigKey, disabled }) => {
   return (
     <div
       className={`keyboard-key ${bigKey && "big-key"} ${
-        disabled && "disabledKey"
-      }`}
+        correct && "correctKey"
+      } ${almost && "almostKey"} ${incorrect && "incorrectKey"}`}
       onClick={selectLetter}
     >
       {keyVal}

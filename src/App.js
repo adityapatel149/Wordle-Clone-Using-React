@@ -1,24 +1,29 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useReducer } from "react";
 import "./styles.css";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import { boardDefault, generateAnswerSet, generateWordSet } from "./Words";
-import { useReducer } from "react/cjs/react.production.min";
 
 export const AppContext = createContext();
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "SET_CORRECTKEYS":
+      if (state.almostKeys.has(action.payload)) {
+        state.almostKeys.delete(action.payload);
+      }
       return {
         ...state,
         correctKeys: new Set([...state.correctKeys, action.payload]),
+        //almostKeys: state.almostKeys,
       };
     case "SET_ALMOSTKEYS":
-      return {
-        ...state,
-        almostKeys: new Set([...state.almostKeys, action.payload]),
-      };
+      if (!state.correctKeys.has(action.payload)) {
+        return {
+          ...state,
+          almostKeys: new Set([...state.almostKeys, action.payload]),
+        };
+      }
     case "SET_INCORRECTKEYS":
       if (
         !state.correctKeys.has(action.payload) &&
@@ -42,10 +47,6 @@ export default function App() {
     almostKeys: new Set(),
     incorrectKeys: new Set(),
   });
-  /*const [incorrectKeys, setIncorrectKeys] = useState(new Set());
-  const [almostKeys, setAlmostKeys] = useState(new Set());
-  const [correctKeys, setCorrectKeys] = useState(new Set());*/
-
   const [board, setBoard] = useState(boardDefault);
   const [currentAttempt, setCurrentAttempt] = useState({
     attempt: 0,

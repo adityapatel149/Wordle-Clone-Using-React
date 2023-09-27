@@ -162,8 +162,8 @@ export default function App() {
       >
         <main>
           <Board />
-          <Keyboard />
-          {gameOver.gameOver && <GameOver />}
+
+          {gameOver.gameOver ? <GameOver /> : <Keyboard />}
         </main>
       </AppContext.Provider>
     </div>

@@ -3,7 +3,12 @@ import "./styles.css";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
-import { boardDefault, generateAnswer, generateWordSet } from "./Words";
+import {
+  boardDefault,
+  resetBoard,
+  generateAnswer,
+  generateWordSet,
+} from "./Words";
 
 export const AppContext = createContext();
 
@@ -38,6 +43,12 @@ const reducer = (state, action) => {
           incorrectKeys: new Set([...state.incorrectKeys, action.payload]),
         };
       }
+    case "RESET_KEYS":
+      return {
+        correctKeys: new Set(),
+        almostKeys: new Set(),
+        incorrectKeys: new Set(),
+      };
     default:
       return state;
   }
@@ -68,6 +79,17 @@ export default function App() {
     );
   }, []);
 
+  const resetGame = () => {
+    generateAnswer().then((answer) => setChosenWord(answer.answer));
+    dispatch({ type: "RESET_KEYS" });
+    resetBoard();
+    setBoard(boardDefault);
+    setCurrentAttempt({
+      attempt: 0,
+      letterPos: 0,
+    });
+    setGameOver({ gameOver: false, won: false });
+  };
   const onSelectLetter = (keyVal) => {
     if (currentAttempt.letterPos > 4) return;
     const newBoard = [...board];
@@ -132,6 +154,7 @@ export default function App() {
           setCurrentAttempt,
           gameOver,
           setGameOver,
+          resetGame,
           onDelete,
           onEnter,
           onSelectLetter,
@@ -139,7 +162,8 @@ export default function App() {
       >
         <main>
           <Board />
-          {gameOver.gameOver ? <GameOver /> : <Keyboard />}
+          <Keyboard />
+          {gameOver.gameOver && <GameOver />}
         </main>
       </AppContext.Provider>
     </div>

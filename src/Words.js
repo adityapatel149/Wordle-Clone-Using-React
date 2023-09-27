@@ -1,7 +1,7 @@
 import answerBank from "./wordle-answer-list.txt";
 import wordBank from "./accepted-word-list.txt";
 
-export const boardDefault = [
+export let boardDefault = [
   ["", "", "", "", ""],
   ["", "", "", "", ""],
   ["", "", "", "", ""],
@@ -9,6 +9,16 @@ export const boardDefault = [
   ["", "", "", "", ""],
   ["", "", "", "", ""],
 ];
+export const resetBoard = () => {
+  boardDefault = [
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+  ];
+};
 
 export const generateWordSet = async () => {
   let wordSet;

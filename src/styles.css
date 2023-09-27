@@ -9,12 +9,21 @@ body {
   text-align: center;
 }
 
+nav {
+  padding: 0.5rem;
+  border-bottom: 2px solid #303030;
+}
+nav h1 {
+  color: #dedede;
+  font-size: 2.5rem;
+}
+
 .board {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: auto;
+  margin: 1rem auto;
   flex-wrap: nowrap;
 }
 
@@ -24,9 +33,8 @@ body {
   flex-wrap: nowrap;
   margin-top: 1rem;
 }
+
 .letter {
-  /*border: 1px solid #444;*/
-  background-color: #232323;
   color: white;
   margin: 0 0.3rem;
   width: 4rem;
@@ -44,7 +52,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 4rem auto;
+  margin: 1rem auto;
   /*flex-wrap: nowrap;*/
 }
 

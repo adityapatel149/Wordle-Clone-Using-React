@@ -2,15 +2,25 @@ import { createContext, useEffect, useState, useReducer } from "react";
 import "./styles.css";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
-import { boardDefault, generateAnswerSet, generateWordSet } from "./Words";
+import GameOver from "./components/GameOver";
+import { boardDefault, generateAnswer, generateWordSet } from "./Words";
+import Footer from "./components/Footer";
 
 export const AppContext = createContext();
+
+/*function getRandomItem() {
+  let items = Array.from(set);
+  return items[Math.floor(Math.random() * items.length)];
+}*/
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "SET_CORRECTKEYS":
       if (state.almostKeys.has(action.payload)) {
         state.almostKeys.delete(action.payload);
+      }
+      if (state.incorrectKeys.has(action.payload)) {
+        state.incorrectKeys.delete(action.payload);
       }
       return {
         ...state,
@@ -40,7 +50,7 @@ const reducer = (state, action) => {
 };
 
 export default function App() {
-  const [chosenWord, setChosenWord] = useState("build");
+  const [chosenWord, setChosenWord] = useState("");
   const [wordSet, setWordSet] = useState(new Set());
   const [keyboardStatus, dispatch] = useReducer(reducer, {
     correctKeys: new Set(),
@@ -53,10 +63,15 @@ export default function App() {
     letterPos: 0,
   });
 
+  const [gameOver, setGameOver] = useState({ gameOver: false, won: false });
+
   useEffect(() => {
-    generateWordSet().then((words) => {
-      setWordSet(words.wordSet);
-    });
+    Promise.all([generateAnswer(), generateWordSet()]).then(
+      ([answer, words]) => {
+        setWordSet(words.wordSet);
+        setChosenWord(answer.answer);
+      },
+    );
   }, []);
 
   const onSelectLetter = (keyVal) => {
@@ -96,7 +111,12 @@ export default function App() {
     }
 
     if (guessedWord.toLowerCase() === chosenWord) {
-      alert("YOU WON");
+      setGameOver({ gameOver: true, won: true });
+      return;
+    }
+
+    if (currentAttempt.attempt === 5) {
+      setGameOver({ gameOver: true, won: false });
     }
   };
 
@@ -114,14 +134,19 @@ export default function App() {
           setBoard,
           currentAttempt,
           setCurrentAttempt,
+          gameOver,
+          setGameOver,
           onDelete,
           onEnter,
           onSelectLetter,
         }}
       >
-        <Board />
-        <Keyboard />
+        <main>
+          <Board />
+          {gameOver.gameOver ? <GameOver /> : <Keyboard />}
+        </main>
       </AppContext.Provider>
+      <Footer />
     </div>
   );
 }

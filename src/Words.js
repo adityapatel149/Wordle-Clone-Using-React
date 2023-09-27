@@ -7,7 +7,7 @@ export const boardDefault = [
   ["", "", "", "", ""],
   ["", "", "", "", ""],
   ["", "", "", "", ""],
-  ["", "", "", "", ""]
+  ["", "", "", "", ""],
 ];
 
 export const generateWordSet = async () => {
@@ -21,13 +21,13 @@ export const generateWordSet = async () => {
   return { wordSet };
 };
 
-export const generateAnswerSet = async () => {
-  let answerSet;
+export const generateAnswer = async () => {
+  let answer = "";
   await fetch(answerBank)
     .then((response) => response.text())
     .then((result) => {
       const answerArray = result.split("\n");
-      answerSet = new Set(answerArray);
+      answer = answerArray[Math.floor(Math.random() * answerArray.length)];
     });
-  return { answerSet };
+  return { answer };
 };

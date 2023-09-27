@@ -4,14 +4,8 @@ import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
 import { boardDefault, generateAnswer, generateWordSet } from "./Words";
-import Footer from "./components/Footer";
 
 export const AppContext = createContext();
-
-/*function getRandomItem() {
-  let items = Array.from(set);
-  return items[Math.floor(Math.random() * items.length)];
-}*/
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -50,7 +44,7 @@ const reducer = (state, action) => {
 };
 
 export default function App() {
-  const [chosenWord, setChosenWord] = useState("");
+  const [chosenWord, setChosenWord] = useState("halve");
   const [wordSet, setWordSet] = useState(new Set());
   const [keyboardStatus, dispatch] = useReducer(reducer, {
     correctKeys: new Set(),
@@ -69,7 +63,7 @@ export default function App() {
     Promise.all([generateAnswer(), generateWordSet()]).then(
       ([answer, words]) => {
         setWordSet(words.wordSet);
-        setChosenWord(answer.answer);
+        //setChosenWord(answer.answer);
       },
     );
   }, []);
@@ -108,6 +102,7 @@ export default function App() {
       });
     } else {
       alert("Word not Found");
+      return; //do not proceed to check gameOver if attempt=5 and word not found
     }
 
     if (guessedWord.toLowerCase() === chosenWord) {
@@ -124,6 +119,7 @@ export default function App() {
     <div className="App">
       <nav>
         <h1>Wordle</h1>
+        <p>by Aditya Patel</p>
       </nav>
       <AppContext.Provider
         value={{
@@ -146,7 +142,6 @@ export default function App() {
           {gameOver.gameOver ? <GameOver /> : <Keyboard />}
         </main>
       </AppContext.Provider>
-      <Footer />
     </div>
   );
 }

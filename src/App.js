@@ -21,10 +21,10 @@ const reducer = (state, action) => {
       if (state.incorrectKeys.has(action.payload)) {
         state.incorrectKeys.delete(action.payload);
       }
+
       return {
         ...state,
         correctKeys: new Set([...state.correctKeys, action.payload]),
-        //almostKeys: state.almostKeys,
       };
     case "SET_ALMOSTKEYS":
       if (!state.correctKeys.has(action.payload)) {
@@ -32,6 +32,8 @@ const reducer = (state, action) => {
           ...state,
           almostKeys: new Set([...state.almostKeys, action.payload]),
         };
+      } else {
+        return state;
       }
     case "SET_INCORRECTKEYS":
       if (
@@ -42,6 +44,8 @@ const reducer = (state, action) => {
           ...state,
           incorrectKeys: new Set([...state.incorrectKeys, action.payload]),
         };
+      } else {
+        return state;
       }
     case "RESET_KEYS":
       return {
@@ -55,7 +59,7 @@ const reducer = (state, action) => {
 };
 
 export default function App() {
-  const [chosenWord, setChosenWord] = useState("");
+  const [chosenWord, setChosenWord] = useState("build");
   const [wordSet, setWordSet] = useState(new Set());
   const [keyboardStatus, dispatch] = useReducer(reducer, {
     correctKeys: new Set(),

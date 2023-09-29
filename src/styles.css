@@ -165,3 +165,9 @@ nav p {
 .primaryButton:hover {
   background-color: #000;
 }
+
+@media screen and (max-width: 540px) {
+  :root {
+    font-size: 12px;
+  }
+}

@@ -1,9 +1,22 @@
-import { useContext } from "react";
+import { useContext, useCallback, useEffect } from "react";
 import { AppContext } from "../App";
 
 const GameOver = () => {
   const { gameOver, chosenWord, currentAttempt, resetGame } =
     useContext(AppContext);
+  const handleKeyboard = useCallback((event) => {
+    if (event.key === "Enter") {
+      playAgain();
+    }
+  });
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyboard);
+    return () => {
+      document.removeEventListener("keydown", handleKeyboard);
+    };
+  }, [handleKeyboard]);
+
   const playAgain = () => {
     resetGame();
   };

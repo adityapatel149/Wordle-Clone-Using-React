@@ -15,14 +15,17 @@ nav {
   border-bottom: 2px solid #303030;
   line-height: 1;
 }
+
 nav h1 {
   font-size: 2.5rem;
   margin: 0;
 }
+
 nav p {
   color: #898989;
   margin: 0;
 }
+
 .board {
   display: flex;
   flex-direction: column;
@@ -150,9 +153,11 @@ nav p {
 .gameWon .attemptMessage {
   color: #115209;
 }
+
 .gameLost .gameOverMessage {
   color: #520d09;
 }
+
 .primaryButton {
   color: white;
   border: none;
@@ -162,6 +167,7 @@ nav p {
   cursor: pointer;
   margin: 0.5rem;
 }
+
 .primaryButton:hover {
   background-color: #000;
 }
